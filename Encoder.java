@@ -3,17 +3,22 @@ public class Encoder{
     public String  encoderIt(String msg,HashMap<Character,String> encoder)
     {
         int[] freq=new int[256];
+        //counting frequency of characters in msg
         this.countChar(freq,msg);
 
         PriorityQueue<Node> queue=new PriorityQueue<>();
+        //inserting character nodes in priority queue
         this.insertInQueue(freq,queue);
+        //building huffman tree
         this.getHuffmanTree(queue);
 
         StringBuilder sb=new StringBuilder();
         Node head=queue.poll();
+        //creating encoded term for each charcter using Huffman tree
         this.getEncBits(head,sb,encoder);
 
         StringBuilder encodedMsg=new StringBuilder();
+        //generating encoded msg
         this.encMsg(msg,encoder,encodedMsg);
         return encodedMsg.toString();
     }
@@ -22,7 +27,7 @@ public class Encoder{
         for(int i=0;i<msg.length();i++)
         {
             char ch=msg.charAt(i);
-            freq[(int)ch]++;
+            freq[ch]++;
         }
     }
     public void insertInQueue(int[] freq,PriorityQueue<Node> queue)
@@ -39,11 +44,14 @@ public class Encoder{
     {
         if(queue.size()==1)
             return;
+        //removing two nodes with the least frequency
         Node left=queue.remove();
         Node right=queue.remove();
 
+        //Adding a new node in queue with total frequency as sum of left and right
+        //and assigning left node to left pointer of new node and right node to right pointer of new node respectively
         int totalFreq=left.count+right.count;
-        queue.add(new Node('*',totalFreq,left,right));
+        queue.add(new Node('\0',totalFreq,left,right));
         getHuffmanTree(queue);
     }
 

@@ -1,3 +1,5 @@
+//Each Node can hold frequency of characters in message.
+//Then using these nodes huffman tree can be created.
 public class Node implements Comparable<Node>{
 
         char ch;
